@@ -1,0 +1,93 @@
+face:
+  # 模型配置
+  model:
+    base-model-path: D:/itlike/workSpace/Java/face/face-open-visual/src/main/resources/sdk/
+    # 人脸检测模型
+    face-detection:
+      # 可选（PcnNetworkFaceDetection 、 InsightScrfdFaceDetection）
+      # insightface的效率高，针对于旋转了大角度的人脸检出率不高
+      # pcn则可以识别大角度旋转的图片，但效率低一些
+      # 若图像均为正脸的图像，建议使用insightface为主模型，pcn为备用模型
+      name: InsightScrfdFaceDetection
+      model-path:
+      thread: 1
+      backup:
+        # 备用人脸检测模型，可选（PcnNetworkFaceDetection 、 InsightScrfdFaceDetection）
+        name: PcnNetworkFaceDetection
+        model-path:
+        thread: 1
+    # 人脸关键点模型
+    faceKey-point:
+      name: InsightCoordFaceKeyPoint
+      model-path:
+      thread: 1
+    # 人脸对齐模型，可选（Simple005pFaceAlignment 、Simple106pFaceAlignment）
+    face-alignment:
+      name: Simple005pFaceAlignment
+      model-path:
+      thread: 1
+    # 人脸特征提取模型，可选（InsightArcFaceRecognition 、SeetaFaceOpenRecognition）
+    face-recognition:
+      name: InsightArcFaceRecognition
+      model-path:
+      thread: 1
+    # 人脸属性检测模型
+    face-attribute:
+      name: InsightAttributeDetection
+      model-path:
+      thread: 1
+  engine:
+    open-search:
+      host: visual-face-search-opensearch
+      port: 9200
+      scheme: https
+      username: admin
+      password: admin
+  scheduler:
+    flush:
+      enable: true
+      interval: 60000
+  face-mask:
+    face-search: false
+    face-compare: false
+  rec-minimum-similarity: 0.8
+  #人脸识别匹配模式（1=优先匹配当前馆【默认】，再匹配其他馆(兼容旧版)；2=不区分馆，匹配所有(兼容旧版)；3=只匹配当前馆）
+  recognize:
+    match-type: 1
+  reg-minimum-similarity: 0.55
+
+server:
+  port: 8877
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 500MB
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/face_open_visual
+    username: postgres
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 60000
+      idle-timeout: 500000
+      max-lifetime: 540000
+      maximum-pool-size: 20
+      minimum-idle: 10
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com:
+      com.shuishu.face.openvisual: info
+      org.springframework: warn
+  pattern:
+    console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    file: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'

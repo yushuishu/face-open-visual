@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: test
+
+
+# knife4j的增强配置
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+  #documents: classpath:swagger/markdown/**
+# springdoc-openapi项目配置
+springdoc:
+  default-flat-param-object: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '基础调试及配置'
+      paths-to-match: '/api/face/basics/**'
+      packages-to-scan: com.shuishu.face.openvisual.server.controller
+    - group: '人脸服务使用'
+      paths-to-match: '/api/face/server/**'
+      packages-to-scan: com.shuishu.face.openvisual.server.controller
+
+
