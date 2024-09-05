@@ -38,11 +38,11 @@ face:
       thread: 1
   engine:
     open-search:
-      host: visual-face-search-opensearch
+      host: 127.0.0.1
       port: 9200
       scheme: https
       username: admin
-      password: admin
+      password: ShuiShu@2024
   scheduler:
     flush:
       enable: true

@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.shuishu.face.openvisual.config.base.ApiResponse;
 import com.shuishu.face.openvisual.server.entity.dto.*;
-import com.shuishu.face.openvisual.server.entity.po.FaceIn;
-import com.shuishu.face.openvisual.server.service.FaceService;
+import com.shuishu.face.openvisual.server.entity.vo.FaceInfoVo;
+import com.shuishu.face.openvisual.server.entity.vo.UserInfoVo;
+import com.shuishu.face.openvisual.server.service.UserFaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,58 +32,58 @@ import java.util.List;
 @RestController
 @Validated
 @RequestMapping("/api/face/server")
-public class FaceController {
+public class UserFaceController {
     
-    private final FaceService faceService;
+    private final UserFaceService userFaceService;
 
 
     @ApiOperationSupport(order = 1)
     @Operation(summary = "查询人脸", description = "主要通过读者证号和馆code来查询读者的人脸信息")
     @GetMapping("user/list")
-    public ApiResponse<List<FaceIn>> findUserFaceList(FaceQueryDto faceQueryDto) {
-        return ApiResponse.success();
+    public ApiResponse<List<UserInfoVo>> findUserFaceList(UserQueryDto userQueryDto) {
+        return ApiResponse.success(userFaceService.findUserFaceList(userQueryDto));
     }
 
     @ApiOperationSupport(order = 5)
-    @Operation(summary = "分页", description = "")
+    @Operation(summary = "分页", description = "主要通过读者证号和馆code来查询读者的人脸信息")
     @GetMapping("user/page")
-    public ApiResponse<Page<FaceIn>> page(FacePageDto facePageDto, Page page) {
-        return ApiResponse.success();
+    public ApiResponse<Page<UserInfoVo>> page(UserPageDto userPageDto, Page page) {
+        return ApiResponse.of(userFaceService.page(userPageDto, page));
     }
 
     @ApiOperationSupport(order = 10)
     @Operation(summary = "绑定人脸", description = "注册人脸")
-    @PostMapping("user/add")
-    public ApiResponse<List<FaceIn>> bindingFace(FaceAddDto faceAddDto) {
-        return ApiResponse.success();
+    @PostMapping("face/add")
+    public ApiResponse<List<FaceInfoVo>> bindingFace(FaceAddDto faceAddDto) {
+        return ApiResponse.of(userFaceService.bindingFace(faceAddDto));
     }
 
     @ApiOperationSupport(order = 15)
     @Operation(summary = "更新人脸", description = "替换旧的人脸，服务处理会根据条码查询旧的人脸信息，更新特征值等信息")
-    @PostMapping("update")
-    public ApiResponse<String> updateFace(FaceUpdateDto faceUpdateDto) {
-        return ApiResponse.success();
+    @PostMapping("face/update")
+    public ApiResponse<Boolean> updateFace(FaceUpdateDto faceUpdateDto) {
+        return ApiResponse.of(userFaceService.updateFace(faceUpdateDto));
     }
 
     @ApiOperationSupport(order = 20)
     @Operation(summary = "人脸识别", description = "普通模式，不存在返回空数据；游客模式，不存在直接注册为游客类型的人脸信息")
-    @PostMapping("recognize")
-    public ApiResponse<FaceIn> findUserByFaceRecognize(FaceRecognizeDto faceRecognizeDto) {
-        return ApiResponse.success();
+    @PostMapping("face/recognize")
+    public ApiResponse<FaceInfoVo> findUserByFaceRecognize(FaceRecognizeDto faceRecognizeDto) {
+        return ApiResponse.of(userFaceService.findUserByFaceRecognize(faceRecognizeDto));
     }
 
     @ApiOperationSupport(order = 25)
     @Operation(summary = "解绑人脸", description = "通过条码，准确无误的解绑人脸信息")
-    @PostMapping("delete")
-    public ApiResponse<Void> deleteFace(FaceDeleteDto faceDeleteDto) {
-        return ApiResponse.success();
+    @PostMapping("face/delete")
+    public ApiResponse<Boolean> deleteFace(FaceDeleteDto faceDeleteDto) {
+        return ApiResponse.of(userFaceService.deleteFace(faceDeleteDto));
     }
 
     @ApiOperationSupport(order = 30)
-    @Operation(summary = "两张人脸图片比对", description = "")
-    @PostMapping("comparison")
-    public ApiResponse<String> comparisonFace(FaceComparisonDto faceComparisonDto) {
-        return ApiResponse.success();
+    @Operation(summary = "两张人脸图片比对", description = "返回比对相似度得分")
+    @PostMapping("face/comparison")
+    public ApiResponse<Integer> comparisonFace(FaceComparisonDto faceComparisonDto) {
+        return ApiResponse.of(userFaceService.comparisonFace(faceComparisonDto));
     }
 
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shuishu.face.openvisual.server.mapper.UserInfoMapper">
+
+    <resultMap id="BaseResultMapOfUserInfo" type="com.shuishu.face.openvisual.server.entity.po.UserInfo">
+        <id property="userInfoId" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="libraryCode" column="library_code" jdbcType="VARCHAR"/>
+        <result property="barcode" column="barcode" jdbcType="VARCHAR"/>
+        <result property="userAge" column="user_age" jdbcType="INTEGER"/>
+        <result property="userGender" column="user_gender" jdbcType="INTEGER"/>
+        <result property="deviceSerialNumber" column="device_serial_number" jdbcType="VARCHAR"/>
+        <result property="registerType" column="register_type" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapOfUserInfoVo" type="com.shuishu.face.openvisual.server.entity.vo.UserInfoVo">
+        <id property="userInfoId" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="libraryCode" column="library_code" jdbcType="VARCHAR"/>
+        <result property="barcode" column="barcode" jdbcType="VARCHAR"/>
+        <result property="userAge" column="user_age" jdbcType="INTEGER"/>
+        <result property="userGender" column="user_gender" jdbcType="INTEGER"/>
+        <result property="deviceSerialNumber" column="device_serial_number" jdbcType="VARCHAR"/>
+        <result property="registerType" column="register_type" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <collection property="faceInfoVoList" ofType="com.shuishu.face.openvisual.server.entity.vo.FaceInfoVo" resultMap="BaseResultMapOfFaceInfoVo"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapOfFaceInfoVo" type="com.shuishu.face.openvisual.server.entity.vo.FaceInfoVo">
+        <id property="faceInfoId" column="face_info_id" jdbcType="INTEGER"/>
+        <result property="userInfoId" column="user_info_id" jdbcType="INTEGER"/>
+        <result property="libraryCode" column="library_code" jdbcType="VARCHAR"/>
+        <result property="faceAge" column="face_age" jdbcType="INTEGER"/>
+        <result property="faceGender" column="face_gender" jdbcType="INTEGER"/>
+        <result property="featureSize" column="feature_size" jdbcType="INTEGER"/>
+        <result property="featureData" column="feature_data" jdbcType="VARCHAR"/>
+        <result property="originalImageUrl" column="create_date" jdbcType="VARCHAR"/>
+        <result property="cropImageUrl" column="cropImageUrl" jdbcType="VARCHAR"/>
+        <result property="imageQuality" column="imageQuality" jdbcType="INTEGER"/>
+        <result property="pitchAngle" column="pitchAngle" jdbcType="FLOAT"/>
+        <result property="leftRightAngle" column="leftRightAngle" jdbcType="FLOAT"/>
+        <result property="planeAngle" column="planeAngle" jdbcType="FLOAT"/>
+        <result property="similarity" column="similarity" jdbcType="FLOAT"/>
+    </resultMap>
+
+
+
+    <select id="findUserFaceList" resultMap="BaseResultMapOfUserInfoVo">
+        select u.*,f.* from user_info u left join face_info f on u.user_info_id=f.user_info_id
+    </select>
+
+</mapper>

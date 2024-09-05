@@ -43,8 +43,8 @@ public class CollectController {
 
     @ApiOperationSupport(order = 5)
     @Operation(summary = "删除集合", description = "根据命名空间，集合名称删除集合")
-    @GetMapping(value = "delete")
-    public ApiResponse<Boolean> deleteCollect(CollectDeleteDto collectDeleteDto) {
+    @PostMapping(value = "delete")
+    public ApiResponse<Boolean> deleteCollect(@RequestBody CollectDeleteDto collectDeleteDto) {
         return ApiResponse.of(collectService.deleteCollect(collectDeleteDto));
     }
 

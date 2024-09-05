@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shuishu.face.openvisual.server.entity.base.BasePo;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,39 +22,33 @@ import org.hibernate.annotations.Comment;
 @Setter
 @Getter
 @ToString
-@Comment("人脸实体")
-@TableName("face_in")
-public class FaceIn extends BasePo {
+@Comment("人脸信息po")
+@TableName("face_info")
+public class FaceInfo extends BasePo {
 
-    @TableId(value = "face_id", type = IdType.ASSIGN_ID)
-    @Comment("face_id")
-    private Long faceInId;
+    @TableId(value = "face_info_id", type = IdType.ASSIGN_ID)
+    @Comment("人脸信息id")
+    private Long faceInfoId;
 
-    @TableField("barcode")
-    @Comment("条码")
-    private String barcode;
+    @TableField("user_info_id")
+    @Comment("用户信息id")
+    private Long userInfoId;
 
-    @TableField("age")
+    @TableField("face_age")
     @Comment("年龄")
-    private Integer age;
+    private Integer faceAge;
 
-    @TableField("gender")
+    @TableField("face_gender")
     @Comment("性别")
-    private Integer gender;
+    private Integer faceGender;
 
     @TableField("feature_size")
     @Comment("特征值大小")
-    private Integer featSize;
+    private Integer featureSize;
 
     @TableField("feature_data")
-    @JsonIgnore
     @Comment("特征值")
-    private String featsData;
-
-    @TableField("feature_byte")
-    @JsonIgnore
-    @Comment("特征值")
-    private byte[] featureByte;
+    private String featureData;
 
     @TableField("original_image_url")
     @Comment("原图片url")
@@ -81,16 +74,5 @@ public class FaceIn extends BasePo {
     @Comment("平面角度")
     private Float planeAngle;
 
-    @TableField("library_code")
-    @Comment("馆代码")
-    private String libraryCode;
-
-    @TableField("device_serial_number")
-    @Comment("设备序列号")
-    private String deviceSerialNumber;
-
-    @TableField("register_type")
-    @Comment("注册类型，1：正常注册；2：游客注册")
-    private Integer registerType;
 
 }

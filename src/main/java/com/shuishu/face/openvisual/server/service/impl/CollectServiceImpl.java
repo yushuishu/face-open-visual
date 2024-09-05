@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.ObjectUtils;
@@ -39,6 +40,7 @@ public class CollectServiceImpl extends BaseService implements CollectService {
     private final OperateTableService operateTableService;
 
 
+    @Transactional(rollbackFor = RuntimeException.class, propagation = Propagation.REQUIRED)
     @Override
     public Boolean addCollect(CollectAddDto collectAddDto) {
         LambdaQueryWrapper<VisualCollection> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -108,7 +110,7 @@ public class CollectServiceImpl extends BaseService implements CollectService {
             throw new RuntimeException(e);
         }
         //添加回滚事务
-        Object savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
+        //Object savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         boolean hasError = false;
         try {
             // 添加平台管理的集合信息
@@ -128,7 +130,7 @@ public class CollectServiceImpl extends BaseService implements CollectService {
         } catch (Exception e) {
             //事务回滚
             hasError = true;
-            TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
+            //TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
             throw new RuntimeException(e);
         } finally {
             // 删除创建的表
